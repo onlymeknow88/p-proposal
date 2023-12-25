@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\FormNOPController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\InboxAppController;
+use App\Http\Controllers\API\FormNOPController;
+use App\Http\Controllers\API\ProposalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,6 @@ Route::get('/redirect', [AuthController::class,'redirect']);
 Route::get('/callback', [AuthController::class,'callback']);
 
 Route::get('form-nop/pdf', [FormNOPController::class,'downloadPDF'])->name('downloadPDF');
+//internal memo
+Route::get('proposal/toPDF', [ProposalController::class, 'internalMemoPDF'])->name('internalMemoPDF');
 

@@ -38,6 +38,9 @@ Route::prefix('proposal')->name('proposal.')->middleware(['auth:api'])->group(fu
     //uploadFile
     Route::post('/uploadFile', [ProposalController::class, 'uploadFile'])->name('uploadFile');
     Route::delete('/deleteFile/{id}', [ProposalController::class, 'deleteFile'])->name('deleteFile');
+
+    //internal memo
+    Route::post('/toPDF', [ProposalController::class, 'internalMemoPDF'])->name('internalMemoPDF');
 });
 
 Route::prefix('ccow')->name('ccow.')->middleware(['auth:api'])->group(function () {

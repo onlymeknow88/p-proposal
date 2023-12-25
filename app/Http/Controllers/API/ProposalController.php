@@ -10,6 +10,7 @@ use App\Mail\TestingEmail;
 use App\Models\UploadFile;
 use Illuminate\Http\Request;
 use App\Models\ProposalBudget;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Helpers\ResponseFormatter;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -594,5 +595,27 @@ class ProposalController extends Controller
         $file->delete();
 
         return ResponseFormatter::success($file, 'file deleted');
+    }
+
+    public function internalMemoPDF(Request $request)
+    {
+        try {
+            $data = $request->except('date');
+            $data['date'] = date('d F Y', strtotime($request->date));
+            // return response()->json($data);
+            $pdf = Pdf::loadView('internal_memo.pdf', compact('data'));
+            $pdfContent = $pdf->output();
+
+            // Encode the PDF content to base64
+            $base64Pdf = base64_encode($pdfContent);
+
+            // You can customize the file name here
+            $filename = 'internal_mesmo.pdf';
+
+            return response()->json(['pdf' => $base64Pdf, 'filename' => $filename]);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
 }
